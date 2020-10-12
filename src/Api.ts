@@ -3,60 +3,59 @@ import express, { Application, Request, Response } from "express";
 import User from "./entities/User";
 import { ILogger } from "./logging/Logger";
 import { IUserRepository } from "./repositories/UserRepository";
+import "reflect-metadata"; // Necesario para routing-controllers
+import { UserController } from "./application/UserController";
+import { createExpressServer, getMetadataArgsStorage } from "routing-controllers";
+import { routingControllersToSpec } from 'routing-controllers-openapi';
+import { validationMetadatasToSchemas } from 'class-validator-jsonschema'
+import swaggerUi from 'swagger-ui-express';
+
 
 export default class Api {
 	private port: number;
-	private userRepo: IUserRepository;
 	private logger: ILogger;
 
 	public constructor(port: number, userRepo: IUserRepository, logger: ILogger) {
 		this.port = port;
-		this.userRepo = userRepo;
 		this.logger = logger;
 	}
 
 	public async start(): Promise<void> {
-		const app: Application = express();
-		app.use(bodyParser.json());
-
-		app.get('/users', async (req: Request, res: Response) => {
-			const users = await this.userRepo.getAll();
-
-			this.logger.debug(`List all users`)
-
-			res.status(200);
-			res.send(JSON.stringify(users));
-		});
-
-		app.get('/users/:email', async (req: Request, res: Response) => {
-			const user = await this.userRepo.findByEmail(req.params.email);
-
-			this.logger.debug(`Search user ${req.params.email}`)
-
-			res.status(200);
-			res.send(JSON.stringify(user));
-		});
-
-		app.delete('/users/:email', async (req: Request, res: Response) => {
-			await this.userRepo.deleteByEmail(req.params.email);
-
-			this.logger.debug(`Deleted user ${req.params.email}`)
-
-			res.status(200);
-			res.send('ok');
-		});
-
-		app.post('/users', async (req: Request, res: Response) => {
-			const user: User = new User(req.body.name, req.body.email);
-			
-			await this.userRepo.save(user);
-
-			this.logger.debug(`Created user ${user.email}`)
-
-			res.status(200);
-			res.send('ok');
-		});
-
+		const app: Application = createExpressServer(this.options());
+		this.serveApiDocs(app)
 		app.listen(this.port, () => this.logger.info(`Listening at port ${this.port}`))
+	}
+
+	/**
+	 * Muestra la documentación de la api.
+	 * @param app
+	 * @private
+	 */
+	private serveApiDocs(app: Application) {
+		const schemas = validationMetadatasToSchemas({
+			refPointerPrefix: '#/components/schemas/',
+		})
+
+		const spec = routingControllersToSpec(
+			getMetadataArgsStorage(),
+			this.options(),
+			{
+				components: { schemas },
+				info: { title: 'Node template', version: '1.0.0' },
+			}
+		)
+
+		app.use(`${this.options().routePrefix}/api-docs`, swaggerUi.serve, swaggerUi.setup(spec));
+	}
+
+	/**
+	 * Opciones para routing-controllers.
+	 * @private
+	 */
+	private options() {
+		return {
+			routePrefix: "/v1",
+			controllers: [__dirname + "/application/**/*.ts"]
+		}
 	}
 }
