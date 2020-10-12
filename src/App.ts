@@ -1,18 +1,21 @@
-import { Connection, createConnection } from "typeorm";
+import {Connection, createConnection, getConnectionOptions} from "typeorm";
 import Api from "./Api";
 import User from "./entities/User";
 import UserRepository, { IUserRepository } from "./repositories/UserRepository";
 import { configure } from "log4js";
 import Log4JSLogger from "./logging/Logger";
+import dotenv from 'dotenv';
+import dotenvExpand from 'dotenv-expand';
 
+dotenvExpand(dotenv.config())
 const DEFAULT_PORT: number = 3333;
 
 async function main() {
 	configure(require('../config/log-config.json'));
 
+	const connectionOptions = await getConnectionOptions();
 	const connection: Connection = await createConnection({
-		type: "postgres",
-		url: "postgres://mpicco:mpicco@localhost:5432/userdb",
+		...connectionOptions,
 		synchronize: true,
 		entities: [ 
 			`${__dirname}/entities/*`
@@ -21,7 +24,7 @@ async function main() {
 
 	const repo: IUserRepository = new UserRepository(await connection.getRepository(User));
 
-	const port: number = process.env.API_PORT ? parseInt(process.env.API_PORT) : DEFAULT_PORT;
+	const port: number = process.env.APP_PORT ? parseInt(process.env.APP_PORT) : DEFAULT_PORT;
 
 	const api: Api = new Api(port, repo, new Log4JSLogger('Api'));
 
