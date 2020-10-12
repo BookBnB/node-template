@@ -6,6 +6,7 @@ import { configure } from "log4js";
 import Log4JSLogger from "./logging/Logger";
 import dotenv from 'dotenv';
 import dotenvExpand from 'dotenv-expand';
+import OrmLogger from "./logging/OrmLogger";
 
 dotenvExpand(dotenv.config())
 const DEFAULT_PORT: number = 3333;
@@ -17,6 +18,7 @@ async function main() {
 	const connection: Connection = await createConnection({
 		...connectionOptions,
 		synchronize: true,
+		logger: new OrmLogger(new Log4JSLogger('Orm')),
 		entities: [ 
 			`${__dirname}/entities/*`
 		]
@@ -28,7 +30,7 @@ async function main() {
 
 	const api: Api = new Api(port, repo, new Log4JSLogger('Api'));
 
-	api.start();
+	await api.start();
 }
 
 main();
