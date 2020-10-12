@@ -13,7 +13,7 @@ Run:
 npm run start
 ```
 
-Tests:
+## Tests
 
 ```
 npm run test			# all tests, no coverage
@@ -22,8 +22,23 @@ npm run test:acceptance # accepatance test only
 npm run test:coverage	# all tests, with coverage
 ```
 
-Features:
+## Migrations
+
+Create migration file:
 
 ```
-npm run cucumber
+npm run migration:create <name>
+```
+
+E.g:
+
+```
+npm run migration:create CreateUsersTable
+```
+
+Run migrations:
+
+```
+npm run migration:run
+npm run migration:revert
 ```

@@ -17,7 +17,6 @@ async function main() {
 	const connectionOptions = await getConnectionOptions();
 	const connection: Connection = await createConnection({
 		...connectionOptions,
-		synchronize: true,
 		logger: new OrmLogger(new Log4JSLogger('Orm')),
 		entities: [ 
 			`${__dirname}/entities/*`
