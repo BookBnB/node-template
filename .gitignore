@@ -4,3 +4,4 @@ build/
 .idea/
 .nyc_output/
 coverage/
+migration/*.js
