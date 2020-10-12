@@ -1,5 +1,7 @@
 # Node Template
 
+[![Build Status](https://travis-ci.com/BookBnB/node-template.svg?token=ztzmYxxiK9M4zZcGZZzZ&branch=master)](https://travis-ci.com/BookBnB/node-template)
+
 Template repo for nodejs services
 
 ## Run
