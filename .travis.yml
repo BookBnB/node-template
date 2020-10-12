@@ -3,5 +3,7 @@ node_js:
   - 12
 
 script:
-  - npm test
-  - npm run cucumber
+  - npm run test:coverage
+
+after_script:
+  - codecov -f coverage/*.json
