@@ -10,13 +10,16 @@ Template repo for nodejs services
 Run:
 
 ```
-npm run clean && npm run build && node build/App.js
+npm run start
 ```
 
 Tests:
 
 ```
-npm run test
+npm run test			# all tests, no coverage
+npm run test:unit		# unit tests only
+npm run test:acceptance # accepatance test only
+npm run test:coverage	# all tests, with coverage
 ```
 
 Features:
