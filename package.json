@@ -11,10 +11,11 @@
     "test": "npm run test:unit && npm run test:aceptance",
     "test:unit": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'test/**/*.ts'",
     "test:aceptance": "node -r esm ./node_modules/.bin/cucumber-js",
-	"test:coverage": "nyc --nycrc-path config/nycrc-config.json npm run test",
-	"migration:create": "npx dotenv -- typeorm migration:create -n",
-	"migration:run": "rm -f ./migration/*.js && tsc migration/*.ts && npx dotenv -- ts-node ./node_modules/typeorm/cli.js migration:run",
-	"migration:revert": "rm -f ./migration/*.js && tsc migration/*.ts && npx dotenv -- ts-node ./node_modules/typeorm/cli.js migration:revert"
+    "test:coverage": "nyc --nycrc-path config/nycrc-config.json npm run test",
+    "typeorm": "dotenv -- ts-node ./node_modules/typeorm/cli.js",
+    "migration:create": "npm run typeorm migration:create -- -n",
+    "migration:run": "npm run typeorm migration:run --",
+    "migration:revert": "npm run typeorm migration:revert --"
   },
   "author": "seblaz mpicco FrancoMaz franfusaro",
   "license": "ISC",
