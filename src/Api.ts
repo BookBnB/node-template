@@ -43,6 +43,8 @@ export default class Api {
 		)
 
 		app.use(`${this.options().routePrefix}/api-docs`, swaggerUi.serve, swaggerUi.setup(spec));
+		app.get(`${this.options().routePrefix}/api.json`, (req, res) =>
+			res.json(spec));
 	}
 
 	/**

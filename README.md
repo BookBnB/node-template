@@ -42,3 +42,7 @@ Run migrations:
 npm run migration:run
 npm run migration:revert
 ```
+
+## Api docs
+
+Se expone la especificación OpenApi en [localhost:3000/v1/api.json](http://localhost:3000/v1/api.json) y la ui swagger en [localhost:3000/v1/api-docs](http://localhost:3000/v1/api-docs/).
