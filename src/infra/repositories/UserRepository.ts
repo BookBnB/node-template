@@ -1,12 +1,6 @@
 import { Repository } from "typeorm";
-import User from "../entities/User";
-
-export interface IUserRepository {
-	getAll(): Promise<User[]>;
-	findByEmail(email: string): Promise<User | undefined>;
-	deleteByEmail(email: string): Promise<void>;
-	save(user: User): Promise<User>;
-}
+import User from "../../domain/entities/User";
+import IUserRepository from "../../domain/repositories/UserRepository";
 
 export default class UserRepository implements IUserRepository {
 	private repo: Repository<User>;

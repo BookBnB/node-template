@@ -1,18 +1,15 @@
-import * as bodyParser from "body-parser";
-import express, { Application, Request, Response } from "express";
-import User from "./entities/User";
-import { ILogger } from "./logging/Logger";
-import { IUserRepository } from "./repositories/UserRepository";
+import { Application} from "express";
+import { ILogger } from "./infra/logging/Logger";
 import "reflect-metadata"; // Necesario para routing-controllers
-import { UserController } from "./application/UserController";
 import { createExpressServer, getMetadataArgsStorage } from "routing-controllers";
 import { routingControllersToSpec } from 'routing-controllers-openapi';
 import { validationMetadatasToSchemas } from 'class-validator-jsonschema'
 import swaggerUi from 'swagger-ui-express';
+import IUserRepository from "./domain/repositories/UserRepository";
 
 
 export default class Api {
-	private port: number;
+	private readonly port: number;
 	private logger: ILogger;
 
 	public constructor(port: number, userRepo: IUserRepository, logger: ILogger) {

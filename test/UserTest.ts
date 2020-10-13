@@ -1,5 +1,5 @@
 import { describe, it } from "mocha";
-import User from "../src/entities/User";
+import User from "../src/domain/entities/User";
 import { expect } from "chai";
 
 describe("User", () => {
