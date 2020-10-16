@@ -7,6 +7,7 @@ import {validationMetadatasToSchemas} from 'class-validator-jsonschema'
 import swaggerUi from 'swagger-ui-express';
 import ContainerAdapter from "./infra/container/ContainerAdapter";
 import {IContainer} from "./infra/container/Container";
+import {HTTPErrorHandlerLogger, HTTPLogger} from './infra/logging/HTTPLogger';
 
 export interface ApiConstructor {
     port: number,
@@ -71,7 +72,11 @@ export default class Api {
     private options() {
         return {
             routePrefix: "/v1",
-            controllers: [__dirname + "/application/**/*.ts"]
+            controllers: [__dirname + "/application/**/*.ts"],
+            middlewares: [
+                HTTPLogger,
+                HTTPErrorHandlerLogger
+            ]
         }
     }
 }

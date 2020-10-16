@@ -3,10 +3,8 @@ import {ILogger} from "./Logger";
 
 
 export default class LoggerAdapter implements Logger {
-    private logger: ILogger;
 
-    public constructor(logger: ILogger) {
-        this.logger = logger;
+    public constructor(private readonly logger: ILogger) {
     }
 
     private static stringifyParams(parameters: any[]) {
