@@ -6,6 +6,7 @@ import IUserRepository from "../../domain/repositories/UserRepository";
 import UserRepository from "../repositories/UserRepository";
 import User from "../../domain/entities/User";
 import {IContainer} from "./Container";
+import {GetUsers} from "../../domain/UseCases";
 
 /**
  * Registra las relaciones entre las abstracciones y las clases
@@ -33,4 +34,5 @@ const registerUsers = async (container: DIContainer) => {
     container.registerSingleton<IUserRepository>( () =>
         new UserRepository(container.get<Repository<User>>()))
     container.registerSingleton<UserController>()
+    container.registerTransient<GetUsers>()
 }
