@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "devStart": "nodemon ./src/App.ts",
-    "start": "npm run clean && npm run build && node ./build/App.js",
-    "build": "tsc",
+    "devStart": "nodemon --exec 'ts-node --compiler ttypescript' ./src/App.ts",
+    "start": "node ./build/App.js",
+    "build": "npm run clean && ttsc",
     "clean": "rm -rf build",
     "test": "npm run test:unit && npm run test:aceptance",
     "test:unit": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'test/**/*.ts'",
@@ -20,6 +20,8 @@
   "author": "seblaz mpicco FrancoMaz franfusaro",
   "license": "ISC",
   "dependencies": {
+    "@wessberg/di": "^2.0.3",
+    "@wessberg/di-compiler": "^2.1.1",
     "body-parser": "^1.19.0",
     "class-transformer": "^0.3.1",
     "class-validator": "^0.12.2",
@@ -55,6 +57,7 @@
     "nodemon": "^2.0.4",
     "sinon": "^9.2.0",
     "ts-node": "^9.0.0",
+    "ttypescript": "^1.5.12",
     "typescript": "^4.0.3"
   }
 }

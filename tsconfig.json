@@ -1,6 +1,9 @@
 {
   "exclude": ["./test/", "./migration/"],
   "compilerOptions": {
+    "plugins": [{
+        "transform": "./src/infra/di-compiler-adapter.ts"
+      }],
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
 
     /* Basic Options */
