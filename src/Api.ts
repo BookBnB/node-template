@@ -5,32 +5,39 @@ import {createExpressServer, getMetadataArgsStorage, useContainer} from "routing
 import {routingControllersToSpec} from 'routing-controllers-openapi';
 import {validationMetadatasToSchemas} from 'class-validator-jsonschema'
 import swaggerUi from 'swagger-ui-express';
-import ContainerAdapter from "./infra/ContainerAdapter";
-import {Connection} from "typeorm";
-import TypeOrmConnection from "./infra/TypeOrmConnection";
-import IUserRepository from "./domain/repositories/UserRepository";
-import UserRepository from "./infra/repositories/UserRepository";
-import User from "./domain/entities/User";
+import ContainerAdapter from "./infra/container/ContainerAdapter";
+import {IContainer} from "./infra/container/Container";
 
+export interface ApiConstructor {
+    port: number,
+    logger: ILogger,
+    container: IContainer
+}
 
 export default class Api {
     private readonly port: number;
-    private logger: ILogger;
+    private readonly logger: ILogger;
+    private readonly container: IContainer;
 
-    public constructor(port: number, logger: ILogger) {
+    public constructor({port, logger, container}: ApiConstructor) {
         this.port = port;
         this.logger = logger;
+        this.container = container;
     }
 
     public async start(): Promise<void> {
-        const connection: Connection = await TypeOrmConnection();
-        const repo: IUserRepository = new UserRepository(await connection.getRepository(User));
-        const container = new ContainerAdapter(connection, repo);
-        useContainer(container);
-
+        await this.useContainer();
         const app: Application = createExpressServer(this.options());
         this.serveApiDocs(app)
         app.listen(this.port, () => this.logger.info(`Listening at port ${this.port}`))
+    }
+
+    /**
+     * Configura el container para instanciar los controladores.
+     * @private
+     */
+    private async useContainer() {
+        useContainer(new ContainerAdapter(this.container));
     }
 
     /**
