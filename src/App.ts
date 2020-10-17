@@ -18,7 +18,13 @@ async function main() {
 	const api: Api = new Api({
 		port,
 		logger: new Log4JSLogger('Api'),
-		container: await registerTypes(new DIContainer())
+		container: await registerTypes(new DIContainer()),
+		openApiInfo: {
+			info: {
+				title: 'Node temple',
+				version: '1.0.0'
+			}
+		}
 	});
 
 	await api.start();

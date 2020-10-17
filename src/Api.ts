@@ -8,22 +8,26 @@ import swaggerUi from 'swagger-ui-express';
 import ContainerAdapter from "./infra/container/ContainerAdapter";
 import {IContainer} from "./infra/container/Container";
 import {HTTPErrorHandlerLogger, HTTPLogger} from './infra/logging/HTTPLogger';
+import {OpenAPIObject} from "openapi3-ts";
 
 export interface ApiConstructor {
     port: number,
     logger: ILogger,
-    container: IContainer
+    container: IContainer,
+    openApiInfo?: Partial<OpenAPIObject>
 }
 
 export default class Api {
     private readonly port: number;
     private readonly logger: ILogger;
     private readonly container: IContainer;
+    private readonly openApiInfo: Partial<OpenAPIObject>;
 
-    public constructor({port, logger, container}: ApiConstructor) {
-        this.port = port;
-        this.logger = logger;
-        this.container = container;
+    public constructor({port, logger, container, openApiInfo = {}}: ApiConstructor) {
+        this.port = port
+        this.logger = logger
+        this.container = container
+        this.openApiInfo = openApiInfo
     }
 
     public async start(): Promise<void> {
@@ -55,8 +59,8 @@ export default class Api {
             getMetadataArgsStorage(),
             this.options(),
             {
+                ...this.openApiInfo,
                 components: {schemas},
-                info: {title: 'Node template', version: '1.0.0'},
             }
         )
 
