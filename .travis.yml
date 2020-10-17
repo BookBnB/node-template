@@ -2,8 +2,23 @@ language: node_js
 node_js:
   - 12
 
+services:
+  - docker
+
 script:
   - npm run test:coverage
 
 after_script:
   - codecov -f coverage/*.json
+
+deploy:
+  provider: script
+  script: bash docker/heroku_push.sh
+  skip_cleanup: true
+  on:
+    all_branches: true
+    condition: $TRAVIS_BRANCH = master || $TRAVIS_BRANCH = develop
+
+env:
+  global:
+    secure: e1jd5AgiEgz0yB0D1QZVc2YJ5MjKAfh3R4VB4hYmxeqBrBuaZLU76ZyR7j5qLaCyZjaRRFBO/nookIW4SspffApR05xAOXoRuaryiYU7Vpxk+fSoMa8egtF28SSlFqV12UCzFtKWHYUpkAapSLD0QviKI9z7pDyVnwT7csGJRMrx2idQ372VLmkRTEn6k9AgOFhsAdsSbVIdN18EQRebC+NLPo7XZwhXwqUu1xmiM3NQaoWvnmZlY2Xf8nNlzvXNaWt92SKxFz3MW5ks2+FXaPORKNnxoP432eh/KOIAOcH+8Ip8jeLTGP5n0FTTRBlmChQdRLmKPWPbg+43Q9autv0yBk1V8rq1asfHjG3xKuGBlm2iL/9AcuPEOq3//GCsaxBpsf4Dm0R6lHK7y5qx0qJyNogpdE+BxKWbew7hYnb9GnpaYLh2/SeuQlM7XQmLkXmaUxHnitw/ES5MBIVfk4k1QB3bArt7x4WLP9Ow3mLAt61EcqnyUwJ1YjLzMMTl09ieI914fixcOfWVopU9KQDbJknvsN02yxHVRHB73rmnxQ4wxZD6hymmXKgzNvu6ON02lalHOM1xtI5z3UGx4RnA3ldmT8vVnP3uI9EDWl36AVVSo/7ln8oiwF9G7j+i7BLb3Wt+cpvV4uJsOCqr7eX8saUC3AjBCGhr0GL3xuQ=
