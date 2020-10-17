@@ -72,7 +72,7 @@ export default class Api {
     private options() {
         return {
             routePrefix: "/v1",
-            controllers: [__dirname + "/application/**/*.ts"],
+            controllers: [__dirname + "/application/**/*"],
             middlewares: [
                 HTTPLogger,
                 HTTPErrorHandlerLogger

@@ -46,3 +46,23 @@ npm run migration:revert
 ## Api docs
 
 Se expone la especificación OpenApi en [localhost:3000/v1/api.json](http://localhost:3000/v1/api.json) y la ui swagger en [localhost:3000/v1/api-docs](http://localhost:3000/v1/api-docs/).
+
+## Docker
+
+Iniciar la app en desarrollo:
+
+```
+docker-compose up -d
+```
+
+Crear imagen con tag 'node-template':
+
+```
+docker/build_production_image.sh
+```
+
+Luego se puede iniciar la app en produccion:
+
+```
+docker/prod.sh up -d
+```

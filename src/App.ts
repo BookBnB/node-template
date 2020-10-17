@@ -11,9 +11,9 @@ async function main() {
 	dotenvExpand(dotenv.config())
 	configure(require('../config/log-config.json'));
 
-	const DEFAULT_PORT: number = 3333;
+	const DEFAULT_PORT: number = 3000;
 
-	const port: number = process.env.APP_PORT ? parseInt(process.env.APP_PORT) : DEFAULT_PORT;
+	const port: number = process.env.PORT ? parseInt(process.env.PORT) : DEFAULT_PORT;
 
 	const api: Api = new Api({
 		port,
