@@ -9,8 +9,6 @@ services:
 
 script:
   - npm run test:coverage
-
-after_script:
   - codecov -f coverage/*.json
 
 deploy:
